@@ -14,6 +14,7 @@ mongoose.connect("mongodb://localhost/shop",{
     useNewUrlParser: true
 });
 app.use(morgan('dev'));
+app.use("/uploads",express.static('uploads')); //To parse the requests at the uploads folder and make it publically available
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use((req,res,next)=>{
