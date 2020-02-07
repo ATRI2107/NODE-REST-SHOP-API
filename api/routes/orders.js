@@ -72,15 +72,49 @@ router.post("/",(req,res,next)=>{
     
 });
 router.get("/:orderId",(req,res,next)=>{
-    res.status(200).json({
-        message: "Order details",
-        orderId: req.params.orderId
+    Order.findById(req.params.orderId)
+    .exec()
+    .then(order=>{
+        if(!order)
+        {
+            return res.status(404).json({
+                message: "Order not Found"
+            });
+        }
+        res.status(200).json({
+            order: order,
+            request:{
+                type: "GET",
+                url: "http://localhost:3000/orders"
+            }
+        });
+    })
+    .catch(er=>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
     });
 });
 router.delete("/:orderId",(req,res,next)=>{
-    res.status(200).json({
-        message: "Order deleted",
-        orderId: req.params.orderId
+    Order.deleteOne({_id: req.params.orderId})
+    .exec()
+    .then(result=>{
+        res.status(200).json({
+            message: "Order Deleted",
+            request:
+            {
+                type: "POST",
+                url: "http://localhost:3000/orders",
+                body: {productId: "ID", quantity: "Number"}
+            }
+        });
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
     });
 });
 module.exports=router;
