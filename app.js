@@ -7,6 +7,7 @@ const mongoose=require("mongoose");
 //Routes
 const productRoutes=require('./api/routes/products');
 const orderRoutes=require("./api/routes/orders");
+const userRoutes=require("./api/routes/user");
 
 //Database connection
 mongoose.connect("mongodb://localhost/shop",{
@@ -27,8 +28,10 @@ app.use((req,res,next)=>{
     }
     next();
 });
+//Configuring the routes to the app
 app.use("/products",productRoutes);
 app.use("/orders",orderRoutes);
+app.use("/user",userRoutes);
 app.use((req,res,next)=>{
     const error=new Error('Not Found');
     error.status=400;
