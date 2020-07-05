@@ -10,9 +10,14 @@ const orderRoutes=require("./api/routes/orders");
 const userRoutes=require("./api/routes/user");
 
 //Database connection
-mongoose.connect("mongodb://localhost/shop",{
+mongoose.connect("mongodb://127.0.0.1:2717/shop",{
     useUnifiedTopology: true,
     useNewUrlParser: true
+}).then(()=>{
+    console.log("Successfully connected to db");
+})
+.catch(err=>{
+    console.log(err);
 });
 app.use(morgan('dev'));
 app.use("/uploads",express.static('uploads')); //To parse the requests at the uploads folder and make it publically available
